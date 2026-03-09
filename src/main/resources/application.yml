@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: configuration-service
+  datasource:
+    url: jdbc:h2:file:./data/configdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///tmp/config-repo
+          clone-on-start: true
+
+server:
+  port: 8091
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,beans,env
+  endpoint:
+    health:
+      show-details: always
+
+config:
+  server:
+    git-enabled: false
+    environments:
+      - dev
+      - staging
+      - production
+
+# Logging Configuration
+logging:
+  level:
+    com.netflix.eureka: INFO
+    com.netflix.discovery: INFO
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
